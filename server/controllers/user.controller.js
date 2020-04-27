@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Appoiment= require('../models/appoiment');
 const { unlink } = require('fs-extra');
 const path = require('path');
 const bcrypt = require('bcrypt');
@@ -20,8 +21,12 @@ userCtrl.getUsers = async(req, res) => {
 
 userCtrl.getUser = async(req, res) => {
     try {
-        const user = await User.findById(req.params.id, 'name email description path');
-        res.json(user);
+
+        idEmployee= req.params.id;
+        const appoiments= await Appoiment.find({employeeId:idEmployee},'clientId serviceId dateTime');
+        res.json(appoiments);
+       /* const user = await User.findById(req.params.id, 'name email description path');
+        res.json(user);*/
     } catch (err) {
         res.status(400).json({
             ok: false,
@@ -132,5 +137,16 @@ userCtrl.deleteUser = async(req, res) => {
         });
     }
 }
+
+
+/*userCtrl.getAppoimentsEmployee= async(req,res)=>{
+    idEmployee= req.params.id;
+   const appoiments= await Appoiment.find({EmployeeId:idEmployee},'clientId serviceId dateTime');
+   res.json(appoiments);
+   
+
+  
+}*/
+
 
 module.exports = userCtrl;

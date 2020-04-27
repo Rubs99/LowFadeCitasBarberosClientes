@@ -2,6 +2,7 @@ const { mongoose } = require('mongoose');
 const clientController = {};
 
 const User = require('../models/user');
+const Appoiment= require('../models/appoiment');
 
 clientController.getClients = async (req, res) => {
 
@@ -21,10 +22,7 @@ clientController.getClients = async (req, res) => {
     }
 }
 
-clientController.getClient = async(req, res) => {
-    const client = await User.findById(req.params.id);
-    res.json(client);
-};
+
 
 clientController.editClient = async (req, res) => {
     try {
@@ -62,5 +60,15 @@ clientController.deleteClient = async (req, res) => {
     }
 
 }
+
+clientController.getAppoimentsClient= async(req,res)=>{
+    idClient= req.params.id;
+   const appoiments= await Appoiment.find({clientId:idClient},'employeeId serviceId dateTime');
+   res.json(appoiments);
+   
+
+  
+}
+
 
 module.exports = clientController;

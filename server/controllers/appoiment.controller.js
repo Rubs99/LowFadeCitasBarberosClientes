@@ -11,7 +11,7 @@ const appoimentController = {};
 
 appoimentController.getAppoiments = async (req, res) => {
     await Appoiment.find({}, function (err, appoiments) {
-        Service.populate(appoiments, { path: "clientId" }, function (err, appoiments) {
+        Service.populate(appoiments, { path: "serviceId " }, function (err, appoiments) {
             res.status(200).send(appoiments);
         });
 
@@ -44,11 +44,11 @@ appoimentController.createAppoiment = async (req, res) => {
             clientId: req.body.clientId,
             serviceId: req.body.serviceId,
             dateTime: req.body.dateTime
-           
+
         });
 
         //datos del cliente
-        const idClient = req.body.clientId;
+        /*const idClient = req.body.clientId;
         console.log('client id: ' + idClient);
         const clientObject = await User.findById(idClient);
         const clientEmail = clientObject.email;
@@ -59,10 +59,10 @@ appoimentController.createAppoiment = async (req, res) => {
         console.log('Service id: ' + idService);
         const serviceObject = await Service.findById(idService);
         const servicePrice = serviceObject.price;
-        console.log('service price: ' + servicePrice);// precio del servicio en base al id
+        console.log('service price: ' + servicePrice);*/
 
 
-        
+
         //create customer
         /*const customer = await stripe.customers.create({
             email: req.body.clientEmail,
@@ -72,32 +72,38 @@ appoimentController.createAppoiment = async (req, res) => {
         });*/
 
         //function to create checkbox
-        const serviceAmount = (servicePrice) * (100);// conversion to mexican price to penny
+       // const serviceAmount = (servicePrice) * (100);// conversion to mexican price to penny
 
-        const charge = await stripe.charges.create({
+        /*const charge = await stripe.charges.create({
             amount: serviceAmount,
             currency: 'mxn',
             description: 'some product from barber shein services',
             email:clientEmail
+        });*/
+
+        /* if (charge) {
+             console.log(charge.id);
+             await appoiment.save();// se guarda la cita
+             res.json({
+                 'status': 'upload',
+ 
+             });
+         } else {
+             res.json({
+                 'status': 'purchase rejected'
+             });
+             console.log('no cayó');
+         }*/
+
+
+
+
+
+        await appoiment.save();// se guarda la cita
+        res.json({
+            'status': 'upload',
+
         });
-
-        if (charge) {
-            console.log(charge.id);
-            await appoiment.save();// se guarda la cita
-            res.json({
-                'status': 'upload',
-
-            });
-        } else {
-            res.json({
-                'status': 'purchase rejected'
-            });
-            console.log('no cayó');
-        }
-
-
-
-
 
     } catch (err) {
         res.status(400).json({
@@ -113,6 +119,7 @@ appoimentController.getAppoiment = async (req, res) => {
     const appoiment = await Appoiment.findById(req.params.id);
     res.json(appoiment);
 }
+
 
 
 appoimentController.editAppoiment = async (req, res) => {
@@ -139,5 +146,10 @@ appoimentController.deleteAppoiment = async (req, res) => {
         'status': 'Appoiment ' + id + ' deleted'
     })
 }
+
+
+
+
+
 
 module.exports = appoimentController;

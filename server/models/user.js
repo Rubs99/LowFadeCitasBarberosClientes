@@ -28,6 +28,7 @@ let userSchema = new Schema({
     created_at: { type: Date, default: Date.now(), required: true },
     birthday:{type :Date},
     premiumClient:{type: Boolean},
+    appoimentId:{type: Schema.ObjectId, ref: "Appoiment" }
 });
 
 userSchema.methods.toJSON = function() {

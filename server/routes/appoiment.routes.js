@@ -7,5 +7,6 @@ router.post('/',appoiment.createAppoiment);
 router.get('/:id',appoiment.getAppoiment);
 router.put('/:id',appoiment.editAppoiment);
 router.delete('/:id',appoiment.deleteAppoiment);
+//router.get('/:idClient',appoiment.getAppoimentsClient)
 
 module.exports= router;
